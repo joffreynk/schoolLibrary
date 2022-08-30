@@ -1,9 +1,11 @@
+require_relative './nameable'
+
 class Person
   attr_accessor :name, :age
   attr_reader :id
 
   def initialize(age, name = 'unknown', parent_permission: true)
-    @id = DateTime.new.to_i
+    # @id = DateTime.new.to_i
     @name = name
     @age = age
     @parent_permission = parent_permission
@@ -11,6 +13,10 @@ class Person
 
   def can_use_services
     is_of_age || @parent_permission
+  end
+
+  def correct_name
+    @name
   end
 
   private

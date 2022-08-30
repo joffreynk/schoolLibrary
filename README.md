@@ -2,6 +2,9 @@
 
 > This project is a for managing school library
 
+Get started 
+to use this application you need to install ruby and run ```ruby test.rb``` in terminal if the terminal location is in this folder
+
 
 👤 **Joffrey Nkeshimana**
 
