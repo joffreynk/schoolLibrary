@@ -8,7 +8,7 @@ class Classroom
   end
 
   def add_student(student)
-    @students.push(animal)
+    @students.push(student)
     student.classroom = self
   end
 end
