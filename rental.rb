@@ -1,5 +1,5 @@
-require './person'
-require './book'
+require_relative './person'
+require_relative './book'
 
 class Rental
   attr_accessor :date, :book, :person
@@ -7,8 +7,8 @@ class Rental
   def initialize(date, book, person)
     @date = date
     @book = book
-    book.rental << self
+    @book.rentals << self
     @person = person
-    person.rentals << self
+    @person.rentals << self
   end
 end
