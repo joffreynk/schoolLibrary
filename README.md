@@ -2,8 +2,13 @@
 
 > This project is a for managing school library
 
-Get started 
-to use this application you need to install ruby and run ```ruby test.rb``` in terminal if the terminal location is in this folder
+## Built With
+
+- Ruby
+
+## Getting Started
+
+To use this application you need to install ruby and run ```main``` in terminal if the terminal location is in this folder of this cloned project
 
 
 👤 **Joffrey Nkeshimana**
