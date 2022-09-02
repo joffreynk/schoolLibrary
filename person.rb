@@ -2,10 +2,9 @@ require_relative './nameable'
 require_relative './rental'
 
 class Person
-  attr_accessor :name, :age
-  attr_accessor :id, :rentals
+  attr_accessor :name, :age, :id, :rentals
 
-  def initialize(age, name = 'unknown', parent_permission = true)
+  def initialize(age, name = 'unknown', parent_permission: true)
     @id = rand(1000)
     @name = name
     @age = age
@@ -26,6 +25,7 @@ class Person
   end
 
   private
+
   def of_age
     @age >= 18
   end
