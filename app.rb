@@ -51,14 +51,14 @@ class App
   end
 
   def create_rental(date, person_index, book_index)
+    puts @people[person_index].name
     rental = Rental.new(date, @people[person_index], @books[book_index])
-    p rental
     @rentals.push(rental)
     puts 'Rental created successfully'
   end
 
   def list_rentals_by_id(person_id)
-    filtered_rentals = @rentals.select { |rental| rental['person']['id'] == person_id }
+    filtered_rentals = @rentals.select { |rental| rental.person.id == person_id }
     filtered_rentals.each { |rental| puts "Date: #{rental.date} Book: #{rental.book.title} by #{rental.book.author}" }
   end
 end

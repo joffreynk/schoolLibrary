@@ -91,7 +91,7 @@ end
 def list_rentals_by_id(app)
   puts 'ID of person'
   id = gets.chomp
-  app.list_rentals_by_id(id)
+  app.list_rentals_by_id(id.to_i)
 end
 
 def main
