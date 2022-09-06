@@ -4,6 +4,8 @@ require_relative './app'
 require_relative './displayOption'
 require_relative './call_actions'
 
+include Actions
+
 def main
   app = App.new
   option = 0

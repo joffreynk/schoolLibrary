@@ -1,4 +1,4 @@
-class Actions
+module Actions
   def self.call_actions(option, app)
     case option
     when 1
@@ -15,8 +15,6 @@ class Actions
       list_rentals_by_id(app)
     end
   end
-
-  private
 
   def list_books(app)
     app.list_books
