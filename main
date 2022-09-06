@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
 require_relative './app'
-require_relative './displayOption'
+require_relative './display'
 require_relative './call_actions'
 
-include Actions
-
+# class Main
+# include Actions
 def main
   app = App.new
   option = 0
@@ -14,7 +14,7 @@ def main
     Options.print_options
     option = gets.chomp.to_i
     if option.positive? && option < 7
-      Actions.call_actions(option, app)
+      call_actions(option, app)
     elsif option == 7
       puts 'Thanks for using this App!'
     else
@@ -22,5 +22,6 @@ def main
     end
   end
 end
+# end
 
 main
