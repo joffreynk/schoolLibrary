@@ -17,6 +17,7 @@ def main
       call_actions(option, app)
     elsif option == 7
       app.write_people
+      app.write_books
       puts 'Thanks for using this App!'
     else
       puts 'Invalid option'
