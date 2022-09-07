@@ -4,6 +4,7 @@ require_relative './book'
 require_relative './rental'
 require_relative './classroom'
 require 'json'
+require 'fileutils'
 
 class App
   attr_accessor :people, :books, :rentals, :classroom
@@ -17,8 +18,8 @@ class App
 
   def load_people
     if File.exists?('./person.json')
-      people_file = File.open('./person.json')
-      new_people = JSON.parse(people_file.read)
+      people_file = File.read('./person.json')
+      new_people = JSON.parse(people_file)
       return new_people if new_people.length.positive?
 
       return []
@@ -27,12 +28,7 @@ class App
   end
 
   def write_people
-    if File.exist?('./person.json')
-      File.write('./person.json', JSON.generate(@people))
-    else
-      File.touch('./person.json')
-    end
-    File.write('./person.json', JSON.generate(@people))
+    File.write('./person.json', JSON.dump(@people))
   end
 
   def list_books
@@ -46,7 +42,7 @@ class App
   def list_people
     if @people.length.positive?
       people.each do |person|
-        puts "[#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+        puts "[#{person.class}] Name: #{person["name"]}, ID: #{person["id"]}, Age: #{person["age"]}"
       end
     else
       puts 'No people added.'
