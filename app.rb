@@ -91,7 +91,7 @@ def write_rentals
     writerentals = []
     if @rentals.length.positive?
       rentals.each do |rental|
-        writerentals.push({ date: rental.date, book: rental.book, person: rental.person })
+        writerentals.push({ date: rental.date, title: rental.book.title, person: rental.person.name })
       end
       File.write('./rental.json', JSON.dump(writerentals))
     end
