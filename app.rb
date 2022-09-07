@@ -18,7 +18,7 @@ class App
   def load_people
     if File.exists?('./person.json')
       people_file = File.open('./person.json')
-      new_people = JSON.parse(File.read(people_file))
+      new_people = JSON.parse(people_file.read)
       return new_people if new_people.length.positive?
 
       return []
