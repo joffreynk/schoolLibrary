@@ -16,6 +16,7 @@ def main
     if option.positive? && option < 7
       call_actions(option, app)
     elsif option == 7
+      app.write_people
       puts 'Thanks for using this App!'
     else
       puts 'Invalid option'

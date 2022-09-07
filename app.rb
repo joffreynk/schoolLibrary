@@ -3,7 +3,7 @@ require_relative './teacher'
 require_relative './book'
 require_relative './rental'
 require_relative './classroom'
-
+require 'json'
 
 class App
   attr_accessor :people, :books, :rentals, :classroom
@@ -16,15 +16,23 @@ class App
   end
 
   def load_people
-    File.exists('./person.json')?
-    people_file = File.open('./person.json')
-    new_people = JSON.parse(File.read(people_file))
-    if new_people.length.positive?
-      return new_people
+    if File.exists?('./person.json')
+      people_file = File.open('./person.json')
+      new_people = JSON.parse(File.read(people_file))
+      return new_people if new_people.length.positive?
+
+      return []
     end
-    return []
-    :
     []
+  end
+
+  def write_people
+    if File.exist?('./person.json')
+      File.write('./person.json', JSON.generate(@people))
+    else
+      File.touch('./person.json')
+    end
+    File.write('./person.json', JSON.generate(@people))
   end
 
   def list_books
