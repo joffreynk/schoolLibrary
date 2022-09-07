@@ -15,6 +15,7 @@ class App
     @rentals = []
     @classroom = 'Default Class'
     load_people
+    load_books
   end
 
   def load_people
@@ -26,7 +27,7 @@ class App
           student = Student.new(person['age'], person['name'], @classroom, parent_permission: person['parent_permission'])
           @people.push(student)
         end
-        if person.class == 'Teacher'
+        if person['class'] == 'Teacher'
           teacher = Teacher.new(person['age'], person['specialization'], person['name'])
           @people.push(teacher)
         end
@@ -38,7 +39,6 @@ class App
     writepeoples = []
     if @people.length.positive?
       people.each { |person|
-        puts person.class
         if person.class.to_s == 'Teacher'
           writepeoples.push({class:'Teacher', age:person.age, specialization:person.specialization, name:person.name})
         end
@@ -47,8 +47,29 @@ class App
           writepeoples.push({class:'Student', age:person.age, parent_permission: true, name:person.name})
         end
       }
-      puts writepeoples
     File.write('./person.json', JSON.dump(writepeoples))
+    end
+  end
+
+  # Write and read books
+  def load_books
+    if File.exists?('./book.json')
+      book_file = File.read('./book.json')
+      new_book = JSON.parse(book_file)
+      new_book.each {|book|
+          book_i = Book.new(book['title'], book['author'])
+          @books.push(book_i)
+      }
+    end
+  end
+
+  def write_books
+    writebooks = []
+    if @books.length.positive?
+      books.each { |book|        
+        writebooks.push({title:book.title, author: book.author})
+      }
+    File.write('./book.json', JSON.dump(writebooks))
     end
   end
 
