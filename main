@@ -18,6 +18,7 @@ def main
     elsif option == 7
       app.write_people
       app.write_books
+      app.write_rentals
       puts 'Thanks for using this App!'
     else
       puts 'Invalid option'

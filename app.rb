@@ -14,64 +14,92 @@ class App
     @books = []
     @rentals = []
     @classroom = 'Default Class'
+    #load_rentals
     load_people
     load_books
   end
 
   def load_people
-    if File.exists?('./person.json')
+    if File.exist?('./person.json')
       people_file = File.read('./person.json')
       new_people = JSON.parse(people_file)
-      new_people.each {|person|
+      new_people.each do |person|
         if person['class'] == 'Student'
-          student = Student.new(person['age'], person['name'], @classroom, parent_permission: person['parent_permission'])
+          student = Student.new(person['age'], person['name'], @classroom,
+                                parent_permission: person['parent_permission'])
           @people.push(student)
         end
         if person['class'] == 'Teacher'
           teacher = Teacher.new(person['age'], person['specialization'], person['name'])
           @people.push(teacher)
         end
-      }
+      end
     end
   end
 
   def write_people
     writepeoples = []
     if @people.length.positive?
-      people.each { |person|
+      people.each do |person|
         if person.class.to_s == 'Teacher'
-          writepeoples.push({class:'Teacher', age:person.age, specialization:person.specialization, name:person.name})
+          writepeoples.push({ class: 'Teacher', age: person.age, specialization: person.specialization,
+                              name: person.name })
         end
 
-        if person.class.to_s  == 'Student'
-          writepeoples.push({class:'Student', age:person.age, parent_permission: true, name:person.name})
+        if person.class.to_s == 'Student'
+          writepeoples.push({ class: 'Student', age: person.age, parent_permission: true, name: person.name })
         end
-      }
-    File.write('./person.json', JSON.dump(writepeoples))
+      end
+      File.write('./person.json', JSON.dump(writepeoples))
     end
   end
 
   # Write and read books
   def load_books
-    if File.exists?('./book.json')
+    if File.exist?('./book.json')
       book_file = File.read('./book.json')
       new_book = JSON.parse(book_file)
-      new_book.each {|book|
-          book_i = Book.new(book['title'], book['author'])
-          @books.push(book_i)
-      }
+      new_book.each do |book|
+        book_i = Book.new(book['title'], book['author'])
+        @books.push(book_i)
+      end
     end
   end
 
   def write_books
     writebooks = []
     if @books.length.positive?
-      books.each { |book|        
-        writebooks.push({title:book.title, author: book.author})
-      }
-    File.write('./book.json', JSON.dump(writebooks))
+      books.each do |book|
+        writebooks.push({ title: book.title, author: book.author })
+      end
+      File.write('./book.json', JSON.dump(writebooks))
     end
   end
+
+  # def list_rentals_by_id(person_id)
+  def list_rentals_by_id(person_id)
+    rentals = []
+    @people.each do |person|
+      rentals = person.rentals if person.id == person_id
+    end
+    puts 'Rentals:'
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: \"#{rental.book.title}\" by #{rental.book.author}"
+    end
+  end
+def write_rentals
+    writerentals = []
+    if @rentals.length.positive?
+      rentals.each do |rental|
+        writerentals.push({ date: rental.date, book: rental.book, person: rental.person })
+      end
+      File.write('./rental.json', JSON.dump(writerentals))
+    end
+  end
+
+
+
+  
 
   def list_books
     if @books.length.positive?
