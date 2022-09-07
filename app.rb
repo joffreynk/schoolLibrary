@@ -9,10 +9,22 @@ class App
   attr_accessor :people, :books, :rentals, :classroom
 
   def initialize
-    @people = []
+    @people = load_people
     @books = []
     @rentals = []
     @classroom = 'Default Class'
+  end
+
+  def load_people
+    File.exists('./person.json')?
+    people_file = File.open('./person.json')
+    new_people = JSON.parse(File.read(people_file))
+    if new_people.length.positive?
+      return new_people
+    end
+    return []
+    :
+    []
   end
 
   def list_books
