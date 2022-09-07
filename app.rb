@@ -10,25 +10,46 @@ class App
   attr_accessor :people, :books, :rentals, :classroom
 
   def initialize
-    @people = load_people
+    @people = []
     @books = []
     @rentals = []
     @classroom = 'Default Class'
+    load_people
   end
 
   def load_people
     if File.exists?('./person.json')
       people_file = File.read('./person.json')
       new_people = JSON.parse(people_file)
-      return new_people if new_people.length.positive?
-
-      return []
+      new_people.each {|person|
+        if person['class'] == 'Student'
+          student = Student.new(person['age'], person['name'], @classroom, parent_permission: person['parent_permission'])
+          @people.push(student)
+        end
+        if person.class == 'Teacher'
+          teacher = Teacher.new(person['age'], person['specialization'], person['name'])
+          @people.push(teacher)
+        end
+      }
     end
-    []
   end
 
   def write_people
-    File.write('./person.json', JSON.dump(@people))
+    writepeoples = []
+    if @people.length.positive?
+      people.each { |person|
+        puts person.class
+        if person.class.to_s == 'Teacher'
+          writepeoples.push({class:'Teacher', age:person.age, specialization:person.specialization, name:person.name})
+        end
+
+        if person.class.to_s  == 'Student'
+          writepeoples.push({class:'Student', age:person.age, parent_permission: true, name:person.name})
+        end
+      }
+      puts writepeoples
+    File.write('./person.json', JSON.dump(writepeoples))
+    end
   end
 
   def list_books
@@ -42,7 +63,7 @@ class App
   def list_people
     if @people.length.positive?
       people.each do |person|
-        puts "[#{person.class}] Name: #{person["name"]}, ID: #{person["id"]}, Age: #{person["age"]}"
+        puts "[#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
       end
     else
       puts 'No people added.'
