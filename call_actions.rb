@@ -75,7 +75,8 @@ def create_rental(app)
 end
 
 def list_rentals_by_id(app)
-  puts 'ID of person'
-  id = gets.chomp
-  app.list_rentals_by_id(id.to_i)
+  # puts 'ID of person'
+  # id = gets.chomp
+  # id.to_i
+  app.list_rentals
 end

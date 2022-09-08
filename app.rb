@@ -3,6 +3,8 @@ require_relative './teacher'
 require_relative './book'
 require_relative './rental'
 require_relative './classroom'
+require 'json'
+require 'fileutils'
 
 class App
   attr_accessor :people, :books, :rentals, :classroom
@@ -12,6 +14,79 @@ class App
     @books = []
     @rentals = []
     @classroom = 'Default Class'
+    load_people
+    load_books
+    loadrentals
+  end
+
+  def load_people
+    people_file = File.read('./person.json')
+    new_people = JSON.parse(people_file)
+    new_people.each do |person|
+      if person['class'] == 'Student'
+        student = Student.new(person['age'], person['name'], @classroom,
+                              parent_permission: person['parent_permission'])
+        @people.push(student)
+      end
+      if person['class'] == 'Teacher'
+        teacher = Teacher.new(person['age'], person['specialization'], person['name'])
+        @people.push(teacher)
+      end
+    end
+  end
+
+  def write_people
+    writepeoples = []
+    people.each do |person|
+      if person.class.to_s == 'Teacher'
+        writepeoples.push({ class: 'Teacher', age: person.age, specialization: person.specialization,
+                            name: person.name })
+      end
+
+      if person.class.to_s == 'Student'
+        writepeoples.push({ class: 'Student', age: person.age, parent_permission: true, name: person.name })
+      end
+    end
+    File.write('./person.json', JSON.dump(writepeoples))
+  end
+
+  # Write and read books
+  def load_books
+    book_file = File.read('./book.json')
+    new_book = JSON.parse(book_file)
+    new_book.each do |book|
+      book_i = Book.new(book['title'], book['author'])
+      @books.push(book_i)
+    end
+  end
+
+  def write_books
+    writebooks = []
+    books.each do |book|
+      writebooks.push({ title: book.title, author: book.author })
+    end
+    File.write('./book.json', JSON.dump(writebooks))
+  end
+
+  # load rentals from files
+  def loadrentals()
+    rentals_file = File.read('./rentals.json')
+    new_rentals = JSON.parse(rentals_file)
+    puts 'rentals loading'
+    new_rentals.each do |rental|
+      book = @books.select { |newb| newb.title == rental['title'] }.first
+      person = @people.select { |newp| newp.name == rental['person'] }.first
+      rental = Rental.new(rental['date'], person, book)
+      @rentals.push(rental)
+    end
+  end
+
+  def write_rentals
+    writerentals = []
+    rentals.each do |rental|
+      writerentals.push({ date: rental.date, title: rental.book.title, person: rental.person.name })
+    end
+    File.write('./rentals.json', JSON.dump(writerentals))
   end
 
   def list_books
@@ -51,14 +126,19 @@ class App
   end
 
   def create_rental(date, person_index, book_index)
-    puts @people[person_index].name
     rental = Rental.new(date, @people[person_index], @books[book_index])
     @rentals.push(rental)
     puts 'Rental created successfully'
   end
 
-  def list_rentals_by_id(person_id)
-    filtered_rentals = @rentals.select { |rental| rental.person.id == person_id }
-    filtered_rentals.each { |rental| puts "Date: #{rental.date} Book: #{rental.book.title} by #{rental.book.author}" }
+  def list_rentals
+    if @rentals.length.positive?
+      rentals.each do |rental|
+        puts "Date: #{rental.date}, Book: #{rental.book.title},\
+  Author: #{rental.book.author}, borrowed by: #{rental.person.name}"
+      end
+    else
+      puts 'No rental added.'
+    end
   end
 end
