@@ -16,4 +16,5 @@ describe Person do
   it 'Test if @person is an instance of Person' do
     expect(@person).to be_instance_of(Person)
   end
+
 end
