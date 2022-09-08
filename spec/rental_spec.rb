@@ -20,5 +20,4 @@ describe Rental do
   it 'test if Joffrey has parent permission' do
     expect(@rental.person.parent_permission).to eq true
   end
-  
 end

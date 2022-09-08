@@ -13,15 +13,15 @@ describe Classroom do
     expect { Classroom.new }.to raise_error(ArgumentError)
   end
 
-  it 'returns the correct label' do 
+  it 'returns the correct label' do
     expect(@book.label).to eq('Classroom')
   end
 
-  it 'the label is a string' do 
+  it 'the label is a string' do
     expect(@book.label).to be_a_kind_of(String)
   end
 
-  it 'the label is not empty' do 
+  it 'the label is not empty' do
     expect(@book.label).not_to be_empty
   end
 end
